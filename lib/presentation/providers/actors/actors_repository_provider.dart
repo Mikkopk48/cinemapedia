@@ -3,5 +3,5 @@ import 'package:cinemapedia/infrastructure/datasources/actor_moviedb_datasource.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final actorRespositoryProvider = Provider((ref){
-  return ActorResositoryImpl(ActorMoviedbDatasource());
+  return ActorResositoryImpl(ActorMovieDbDatasource());
 });

@@ -3,7 +3,7 @@ import 'package:cinemapedia/domain/entities/actor.dart';
 import 'package:cinemapedia/domain/repositories/actors_repository.dart';
 
 class ActorResositoryImpl extends ActorsRepository {
-  final ActorsDatasorce datasorce;
+  final ActorsDatasource datasorce;
 
   ActorResositoryImpl(this.datasorce);
   @override

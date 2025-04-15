@@ -10,7 +10,7 @@ class MoviedbDatasource extends MoviesDatasource {
   final dio = Dio(
     BaseOptions(
       baseUrl: 'https://api.themoviedb.org/3',
-      queryParameters: {'api_key': Enviroment.movieDbKey, 'lenguage': 'es-MX'},
+      queryParameters: {'api_key': Environment.theMovieDbKey, 'lenguage': 'es-MX'},
     ),
   );
   List<Movie> _jsonToMovies(Map<String, dynamic> json) {
@@ -68,5 +68,14 @@ class MoviedbDatasource extends MoviesDatasource {
     final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
 
     return movie;
+  }
+  
+  @override
+  Future<List<Movie>> searchMovies(String query) async{
+    final response = await dio.get(
+      '/search/movie',
+      queryParameters: {'query': query},
+    );
+    return _jsonToMovies(response.data);
   }
 }
