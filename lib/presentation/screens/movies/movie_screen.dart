@@ -69,7 +69,6 @@ class _MovieDetails extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Imagen
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.network(
@@ -77,10 +76,7 @@ class _MovieDetails extends StatelessWidget {
                   width: size.width * 0.3,
                 ),
               ),
-
               const SizedBox(width: 10),
-
-              // Descripción
               SizedBox(
                 width: (size.width - 40) * 0.7,
                 child: Column(
@@ -94,8 +90,6 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-
-        // Generos de la película
         Padding(
           padding: const EdgeInsets.all(8),
           child: Wrap(
@@ -111,9 +105,7 @@ class _MovieDetails extends StatelessWidget {
             ],
           ),
         ),
-
         _ActorsByMovie(movieId: movie.id.toString()),
-
         const SizedBox(height: 50),
       ],
     );
@@ -148,7 +140,6 @@ class _ActorsByMovie extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Actor Photo
                 FadeInRight(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
@@ -160,8 +151,6 @@ class _ActorsByMovie extends ConsumerWidget {
                     ),
                   ),
                 ),
-
-                // Nombre
                 const SizedBox(
                   height: 5,
                 ),
@@ -202,15 +191,10 @@ class _CustomSliverAppBar extends StatelessWidget {
           icon: Icon(Icons.favorite_rounded),
           color: Colors.red,
         )
-        // icon: Icon(Icons.favorite_outline) )
       ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        // title: Text(
-        //   movie.title,
-        //   style: const TextStyle(fontSize: 20),
-        //   textAlign: TextAlign.start,
-        // ),
+
         background: Stack(
           children: [
             SizedBox.expand(
@@ -223,47 +207,30 @@ class _CustomSliverAppBar extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: [0.7, 1.0],
-                          colors: [Colors.transparent, Colors.black87]))),
-            ),
-            const SizedBox.expand(
-              child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          stops: [
-                    0.0,
-                    0.2
-                  ],
-                          colors: [
-                    Colors.black54,
-                    Colors.transparent,
-                  ]))),
+            _CustomGradient(
+              colors: const [Colors.transparent, Colors.black87],
+              stops: const [0.7, 1.0],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
             _CustomGradient(
-              end: Alignment.topLeft,
-              startGredient: 0.0,
-              endGredient: 0.3,
-            )
-            // const SizedBox.expand(
-            //   child: DecoratedBox(
-            //       decoration: BoxDecoration(
-            //           gradient:
-            //               LinearGradient(begin: Alignment.topLeft, stops: [
-            //     0.0,
-            //     0.3
-            //   ], colors: [
-            //     Colors.black87,
-            //     Colors.transparent,
-            //   ]))),
-            // ),
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: const [
+                  0.0,
+                  0.2
+                ],
+                colors: const [
+                  Colors.black54,
+                  Colors.transparent,
+                ]),
+            _CustomGradient(begin: Alignment.topLeft, stops: const [
+              0.0,
+              0.3
+            ], colors: const [
+              Colors.black87,
+              Colors.transparent,
+            ])
           ],
         ),
       ),
@@ -275,7 +242,7 @@ class _CustomGradient extends StatelessWidget {
   final AlignmentGeometry begin;
   final AlignmentGeometry end;
   List<double> stops;
-  List<double> colors;
+  List<Color> colors;
   _CustomGradient(
       {required this.colors,
       required this.stops,
@@ -286,13 +253,8 @@ class _CustomGradient extends StatelessWidget {
     return SizedBox.expand(
       child: DecoratedBox(
           decoration: BoxDecoration(
-              gradient: LinearGradient(begin: begin, end: end, stops: [
-        startGredient,
-        endGredient
-      ], colors: const [
-        Colors.black87,
-        Colors.transparent,
-      ]))),
+              gradient: LinearGradient(
+                  begin: begin, end: end, stops: stops, colors: colors))),
     );
   }
 }
