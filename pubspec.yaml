@@ -17,7 +17,7 @@ dependencies:
   go_router: ^6.0.9
   intl: ^0.18.0
   isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+  isar_flutter_libs: ^3.1.0 
 
 dev_dependencies:
   build_runner: ^2.4.13

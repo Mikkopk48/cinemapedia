@@ -1,3 +1,4 @@
+import 'package:cinemapedia/presentation/providers/storage/local_storage_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:animate_do/animate_do.dart';
@@ -154,7 +155,6 @@ class _ActorsByMovie extends ConsumerWidget {
                 const SizedBox(
                   height: 5,
                 ),
-
                 Text(actor.name, maxLines: 2),
                 Text(
                   actor.character ?? '',
@@ -172,13 +172,19 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
-class _CustomSliverAppBar extends StatelessWidget {
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+  return localStorageRepository.isMovieFavorite(movieId);
+});
+
+class _CustomSliverAppBar extends ConsumerWidget {
   final Movie movie;
 
   const _CustomSliverAppBar({required this.movie});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     final size = MediaQuery.of(context).size;
 
     return SliverAppBar(
@@ -187,14 +193,23 @@ class _CustomSliverAppBar extends StatelessWidget {
       foregroundColor: Colors.white,
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.favorite_rounded),
+          onPressed: () {
+            ref.watch(localStorageRepositoryProvider).toggleFavorite(movie);
+            ref.invalidate(isFavoriteProvider(movie.id));
+          },
+          // icon:
+          icon: isFavoriteFuture.when(
+            loading: () => const CircularProgressIndicator(),
+            data: (isFavorite) => isFavorite
+                ? const Icon(Icons.favorite_border)
+                : const Icon(Icons.favorite_rounded),
+            error: (_, __) => throw UnimplementedError(),
+          ),
           color: Colors.red,
         )
       ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-
         background: Stack(
           children: [
             SizedBox.expand(
